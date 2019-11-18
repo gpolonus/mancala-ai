@@ -35,7 +35,6 @@ const _actions = {
     return {loading: true};
   },
   stopLoading: () => () => {
-    alert('Finished!');
     return {loading: false};
   },
   runClient: () => ({boardLength, pieceInit}) => {
