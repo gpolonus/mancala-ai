@@ -16,10 +16,14 @@ app.get('/runFull', function ({query: {bl, pi}}, res) {
   res.send(JSON.stringify(choiceTree));
 });
 
+/**
+ * Returns [ firstWins, secondWins, totalWins ]
+ */
 app.get('/odds', function ({query: {m}}, res) {
   console.log('/odds hit')
   const currentBoard = Mancala.copy(m);
-  const theOdds = calculateOdds(currentBoard);
+  const choiceTree = runFullOnBoard(currentBoard)
+  const theOdds = calculateOdds(choiceTree);
   res.send(theOdds);
 });
 

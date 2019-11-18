@@ -22,8 +22,8 @@ class Mancala {
     if (this.current !== playerNum) {
       return;
     }
-    // pn is the side im on
-    // s is the spot im on RIGHT NOW
+    // pn is the side I'm on
+    // s is the spot I'm on RIGHT NOW
     // return: whether or not to switch the player
     const doMove = (piecesLeft, pn, s) => {
       if (piecesLeft <= 0) {
@@ -116,8 +116,34 @@ const runFullOnBoard = (mancala) => {
   return runLayer(mancala);
 }
 
-const calculateOdds = () => {
+function firstWinInc(ac) {
+  return [ ac[0] + 1, ac[1], ac[2] + 1 ]
+}
 
+function secondWinInc(ac) {
+  return [ ac[0], ac[1] + 1, ac[2] + 1 ]
+}
+
+const calculateOdds = (choiceTree) => {
+  const co = (ct, stats = [0, 0, 0]) => {
+    return ct.reduce((ac, side) => {
+      return side.reduce((_ac, spot) => {
+        // return [ firstWins, secondWins, totalWins ]
+        if(spot === false) {
+          return _ac
+        } else if(spot === 0) {
+          return firstWinInc(_ac)
+        } else if(spot === 1) {
+          return secondWinInc(_ac)
+        } else {
+          // spot is an Array
+          return co(spot, _ac)
+        }
+      }, ac)
+    }, stats)
+  }
+
+  return co(choiceTree)
 }
 
 module.exports = {
